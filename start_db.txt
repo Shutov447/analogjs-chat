@@ -1,0 +1,4 @@
+1. cd "H:\programs\postgreSQL\17\bin"
+2. .\pg_ctl start -D "H:\programs\PostgreSQL\17\data"
+3. .\pg_ctl status -D "H:\programs\PostgreSQL\17\data"
+3. .\pg_ctl stop -D "H:\programs\PostgreSQL\17\data"

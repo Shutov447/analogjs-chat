@@ -1,0 +1,6 @@
+@for (message of messages; track message.id) {
+<app-message
+    [message]="message"
+    [class]="message.by === 'me' ? 'own' : ''"
+></app-message>
+}

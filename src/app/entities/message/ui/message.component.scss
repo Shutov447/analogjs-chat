@@ -1,0 +1,50 @@
+:host {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: auto;
+    font-size: 1.1rem;
+    --bgc-other: rgb(220, 202, 202);
+    --bgc-own: rgb(180, 193, 223);
+}
+
+.email {
+    color: purple;
+    font-size: 1.3rem;
+    width: fit-content;
+    padding: 5px 10px;
+    padding-bottom: 5px;
+    background-color: var(--bgc-other);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.message {
+    position: relative;
+    left: 20px;
+    padding: 5px 5px 5px 10px;
+    background-color: var(--bgc-other);
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+:host(.own) {
+    align-self: flex-end;
+
+    .email {
+        align-self: flex-end;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 15px;
+        background-color: var(--bgc-own);
+    }
+
+    .message {
+        left: -20px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 0;
+        background-color: var(--bgc-own);
+    }
+}

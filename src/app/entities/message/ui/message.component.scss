@@ -1,12 +1,17 @@
 :host {
+    --bgc-other: rgb(220, 202, 202);
+    --bgc-own: rgb(180, 193, 223);
+    --br-rad: 10px;
+    --wall-offset: 10px;
+}
+
+:host {
     position: relative;
     display: flex;
     flex-direction: column;
     width: 80%;
     height: auto;
     font-size: 1.1rem;
-    --bgc-other: rgb(220, 202, 202);
-    --bgc-own: rgb(180, 193, 223);
 }
 
 .email {
@@ -16,19 +21,19 @@
     padding: 5px 10px;
     padding-bottom: 5px;
     background-color: var(--bgc-other);
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-top-left-radius: var(--br-rad);
+    border-top-right-radius: var(--br-rad);
+    border-bottom-left-radius: var(--br-rad);
 }
 
 .message {
     position: relative;
-    left: 20px;
+    left: var(--wall-offset);
     padding: 5px 5px 5px 10px;
     background-color: var(--bgc-other);
-    border-top-right-radius: 15px;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-right-radius: var(--br-rad);
+    border-bottom-left-radius: var(--br-rad);
+    border-bottom-right-radius: var(--br-rad);
 }
 
 :host(.own) {
@@ -37,13 +42,13 @@
     .email {
         align-self: flex-end;
         border-bottom-left-radius: 0;
-        border-bottom-right-radius: 15px;
+        border-bottom-right-radius: var(--br-rad);
         background-color: var(--bgc-own);
     }
 
     .message {
-        left: -20px;
-        border-top-left-radius: 15px;
+        left: calc(var(--wall-offset) * -1);
+        border-top-left-radius: var(--br-rad);
         border-top-right-radius: 0;
         background-color: var(--bgc-own);
     }

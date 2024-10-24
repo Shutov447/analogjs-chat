@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MessageComponent } from '@entities/message';
-import { MessageShowcaseComponent } from '../../widgets/message-showcase/ui/message-showcase.component';
 import { MessageFormComponent } from '@features/message-form';
+import { MessageShowcaseComponent } from '@widgets/message-showcase';
 
 @Component({
     selector: 'app-home',

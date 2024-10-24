@@ -1,0 +1,31 @@
+<form [formGroup]="form" class="form" (ngSubmit)="submit()">
+    <h2 class="title">Login</h2>
+    <label for="email"
+        >Email:<input
+            type="email"
+            id="email"
+            formControlName="email"
+            required
+            autocomplete
+            [class]="email?.invalid && email?.touched ? 'invalid' : ''"
+    /></label>
+    <label for="password"
+        >Password:<input
+            type="password"
+            id="password"
+            formControlName="password"
+            required
+            autocomplete
+            placeholder=">3 сим"
+            [class]="password?.invalid && password?.touched ? 'invalid' : ''"
+    /></label>
+    <button class="button" type="submit" [disabled]="form.invalid">
+        Отправить
+    </button>
+</form>
+@if (error()) {
+<p class="invalid">браток, ты походу ошибся, либо тебе надо зарегаться</p>
+}
+<button [routerLink]="['/registration']" class="button">
+    ->зарегистрироваться<-
+</button>

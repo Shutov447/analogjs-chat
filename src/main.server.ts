@@ -8,6 +8,8 @@ import { ServerContext } from '@analogjs/router/tokens';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { AppComponent, config } from '@app';
 import pg from 'pg';
+import { userTable } from './db/schema/user';
+import { sql } from 'drizzle-orm';
 
 const pool = new pg.Pool({
     user: 'postgres',
@@ -16,7 +18,22 @@ const pool = new pg.Pool({
     port: 5432,
     database: 'chat',
 });
-const db = drizzle({ client: pool });
+export const db = drizzle({ client: pool });
+
+// (async () => {
+//     const hashPassword = await bcrypt.hash('12345678', 10);
+//     const hashPassword2 = await bcrypt.hash('12345678', 10);
+//     const hashPassword3 = await bcrypt.hash('12345678', 10);
+//     console.log('hashPassword', hashPassword);
+//     console.log('hashPassword2', hashPassword2);
+//     console.log('hashPassword3', hashPassword3);
+//     console.log(
+//         'same?',
+//         hashPassword === hashPassword2 && hashPassword === hashPassword3
+//     );
+// })();
+// clear table
+// (async () => await db.execute(sql`TRUNCATE TABLE users CASCADE;`))();
 
 if (import.meta.env.PROD) {
     enableProdMode();

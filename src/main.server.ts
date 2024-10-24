@@ -20,18 +20,6 @@ const pool = new pg.Pool({
 });
 export const db = drizzle({ client: pool });
 
-// (async () => {
-//     const hashPassword = await bcrypt.hash('12345678', 10);
-//     const hashPassword2 = await bcrypt.hash('12345678', 10);
-//     const hashPassword3 = await bcrypt.hash('12345678', 10);
-//     console.log('hashPassword', hashPassword);
-//     console.log('hashPassword2', hashPassword2);
-//     console.log('hashPassword3', hashPassword3);
-//     console.log(
-//         'same?',
-//         hashPassword === hashPassword2 && hashPassword === hashPassword3
-//     );
-// })();
 // clear table
 // (async () => await db.execute(sql`TRUNCATE TABLE users CASCADE;`))();
 

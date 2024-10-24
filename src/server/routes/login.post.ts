@@ -16,12 +16,12 @@ export default defineEventHandler(
     async (event): Promise<IReturnedUser | void> => {
         if (getRequestURL(event).pathname.startsWith('/login')) {
             const userAuthData = await readBody(event);
-            console.log('after not found email or password', userAuthData);
+            console.log('login body', userAuthData);
             const userRepo = new UserRepository(db);
 
-            return !(userAuthData?.email && userAuthData?.password)
-                ? authByToken(event, userRepo)
-                : authByLoginData(event, userRepo, userAuthData);
+            return userAuthData?.email && userAuthData?.password
+                ? authByLoginData(event, userRepo, userAuthData)
+                : authByToken(event, userRepo);
         }
     }
 );

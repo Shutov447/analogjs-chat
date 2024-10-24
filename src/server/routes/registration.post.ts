@@ -10,10 +10,10 @@ import { IRegistrationResponse, IUserAuthData } from '../../shared/types';
 export default defineEventHandler(
     async (event): Promise<IRegistrationResponse | void> => {
         if (getRequestURL(event).pathname.startsWith('/registration')) {
-            const newUser: IUserAuthData = await readBody(event);
+            const newUser = await readBody(event);
 
             try {
-                const { email, password } = newUser;
+                const { email, password } = newUser as IUserAuthData;
 
                 if (email && password) {
                     const userRepo = new UserRepository(db);

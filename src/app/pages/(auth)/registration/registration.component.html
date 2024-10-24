@@ -19,10 +19,12 @@
             placeholder=">3 сим"
             [class]="password?.invalid && password?.touched ? 'invalid' : ''"
     /></label>
+    @if (error()) {
+    <p class="invalid">Ошибка регистрации (хз, попробуй другой email)</p>
+    }
     <button class="button" type="submit" [disabled]="form.invalid">
         Отправить
     </button>
 </form>
-@if (error()) {
-<p class="invalid">Ошибка регистрации (хз, попробуй другой email)</p>
-}
+
+<button routerLink="/login" class="button">или залогиниться</button>

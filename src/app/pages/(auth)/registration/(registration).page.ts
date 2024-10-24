@@ -2,12 +2,16 @@ import {
     ChangeDetectionStrategy,
     Component,
     computed,
+    DestroyRef,
     inject,
+    OnInit,
 } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@entities/auth';
 import { IUserAuthData } from '../../../../../src/shared/types';
+import { first } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-registration',
@@ -17,8 +21,10 @@ import { IUserAuthData } from '../../../../../src/shared/types';
     styleUrl: './registration.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class RegistrationComponent {
+export default class RegistrationComponent implements OnInit {
     private readonly fb = inject(FormBuilder);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
 
     readonly error = computed(() => this.authService.errors().registration);
@@ -35,7 +41,18 @@ export default class RegistrationComponent {
         return this.form.get('password');
     }
 
+    ngOnInit() {
+        this.authService.errors.set({
+            ...this.authService.errors(),
+            registration: false,
+        });
+    }
     submit() {
-        this.authService.registration(this.form.value as IUserAuthData);
+        this.authService
+            .registration(this.form.value as IUserAuthData)
+            .pipe(takeUntilDestroyed(this.destroyRef), first())
+            .subscribe((res) => {
+                res?.returnedUser && this.router.navigate(['/']);
+            });
     }
 }

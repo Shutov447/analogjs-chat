@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '@entities/auth';
 
 @Component({
     selector: 'app-message-form',
@@ -11,6 +13,8 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 })
 export class MessageFormComponent {
     private readonly fb = inject(FormBuilder);
+    private readonly authService = inject(AuthService);
+    readonly user = toSignal(this.authService.returnedUser$);
 
     readonly messageForm = this.fb.group({
         message: [''],

@@ -4,10 +4,7 @@ import { db } from '../../../main.server';
 
 export interface IUserRepository {
     findByEmail(email: string): Promise<User | null | undefined>;
-    // findAll(): Promise<User[]>;
-    create(user: User): Promise<User>;
-    // update(id: string, user: User): Promise<User | null>;
-    // delete(id: string): Promise<boolean>;
+    create(user: NewUser): Promise<User>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -27,6 +24,15 @@ export class UserRepository implements IUserRepository {
             .select()
             .from(userTable)
             .where(eq(userTable.email, email));
+
+        return user;
+    }
+
+    async findById(id: number): Promise<User | null | undefined> {
+        const [user] = await this.database
+            .select()
+            .from(userTable)
+            .where(eq(userTable.id, id));
 
         return user;
     }

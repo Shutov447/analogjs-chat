@@ -6,11 +6,17 @@
 
 .email {
     padding: 5px;
-    background-color: rgba(0, 0, 0, 0.255);
+    background-color: rgb(173, 165, 165);
     text-align: right;
+    border-radius: 10px;
+    margin-bottom: 1px;
 }
 
 .form {
+    display: flex;
+    height: 100%;
+    gap: 1px;
+
     &__textarea {
         background-color: rgb(212, 209, 209);
         padding: 10px;
@@ -21,5 +27,28 @@
         &::placeholder {
             color: rgba(0, 0, 0, 0.255);
         }
+    }
+
+    &__submit {
+        min-width: 3rem;
+        flex-grow: 1;
+        margin: 0;
+        padding: 0;
+        border-radius: 10px;
+        font-size: 2rem;
+    }
+}
+
+.error {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 3px;
+    width: 100%;
+    background-color: red;
+
+    &__button {
+        border-radius: 10px;
+        margin: 0;
     }
 }

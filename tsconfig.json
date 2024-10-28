@@ -32,6 +32,16 @@
             "@entities/*": ["./src/app/entities/*"],
             "@shared/*": ["./src/app/shared/*"],
             "@environments": ["./src/app/environments"]
+            // "@client/core": ["./src/app/app"],
+            // "@client/core/*": ["./src/app/app/*"],
+            // "@client/pages": ["./src/app/pages"],
+            // "@client/pages/*": ["./src/app/pages/*"],
+            // "@client/widgets/*": ["./src/app/widgets/*"],
+            // "@client/features/*": ["./src/app/features/*"],
+            // "@client/entities/*": ["./src/app/entities/*"],
+            // "@client/shared/*": ["./src/app/shared/*"],
+            // "@client/environments": ["./src/app/environments"]
+            // "@src/db": ["./src/db"]
         }
     },
     "angularCompilerOptions": {

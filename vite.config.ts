@@ -13,7 +13,22 @@ export default defineConfig(({ mode }) => ({
         mainFields: ['module'],
     },
     plugins: [
-        analog(),
+        analog({
+            ssr: true,
+            // nitro: {
+            //     routeRules: {
+            //         '/': {
+            //             prerender: false,
+            //         },
+            //     },
+            // },
+            prerender: {
+                // routes: async () => {
+                //     return [];
+                // },
+                routes: ['/', '/login'],
+            },
+        }),
         ViteAliases({
             dir: './src/app',
             prefix: '@',

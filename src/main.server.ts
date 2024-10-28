@@ -8,8 +8,9 @@ import { ServerContext } from '@analogjs/router/tokens';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { AppComponent, config } from '@app';
 import pg from 'pg';
-import { userTable } from './db/schema/user';
-import { sql } from 'drizzle-orm';
+import { WebSocketMessageController } from './server/web-socket';
+import { UserRepository } from './server/repositories/user';
+import { MessageRepository } from './server/repositories/message';
 
 const pool = new pg.Pool({
     user: 'postgres',
@@ -19,9 +20,16 @@ const pool = new pg.Pool({
     database: 'chat',
 });
 export const db = drizzle({ client: pool });
+export const userRepo = new UserRepository(db);
+export const messageRepo = new MessageRepository(db);
 
-// clear table
-// (async () => await db.execute(sql`TRUNCATE TABLE users CASCADE;`))();
+const wsmc = new WebSocketMessageController(
+    'localhost',
+    6969,
+    userRepo,
+    messageRepo
+);
+wsmc.listenTo();
 
 if (import.meta.env.PROD) {
     enableProdMode();

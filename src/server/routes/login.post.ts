@@ -1,28 +1,19 @@
 import bcrypt from 'bcrypt';
-import {
-    defineEventHandler,
-    getRequestURL,
-    H3Event,
-    parseCookies,
-    readBody,
-} from 'h3';
+import { defineEventHandler, H3Event, parseCookies, readBody } from 'h3';
 import { generateToken } from '../utils/generate-token';
-import { db } from '../../main.server';
-import { IUserRepository, UserRepository } from '../repositories/user';
+import { IUserRepository } from '../repositories/user';
+import { userRepo } from '../../main.server';
 import { IReturnedUser, IUserAuthData } from '../../shared/types';
 import { verifyToken } from '../utils/verify-token';
 
 export default defineEventHandler(
     async (event): Promise<IReturnedUser | void> => {
-        if (getRequestURL(event).pathname.startsWith('/login')) {
-            const userAuthData = await readBody(event);
-            console.log('login body', userAuthData);
-            const userRepo = new UserRepository(db);
+        const userAuthData = await readBody(event);
+        console.log('login body', userAuthData);
 
-            return userAuthData?.email && userAuthData?.password
-                ? authByLoginData(event, userRepo, userAuthData)
-                : authByToken(event, userRepo);
-        }
+        return userAuthData?.email && userAuthData?.password
+            ? authByLoginData(event, userAuthData)
+            : authByToken(event, userRepo);
     }
 );
 
@@ -42,7 +33,6 @@ const authByToken = async (
 
 const authByLoginData = async (
     event: H3Event,
-    userRepo: IUserRepository,
     userAuthData: IUserAuthData
 ): Promise<{ email: string } | void> => {
     const foundUser = await userRepo.findByEmail(userAuthData.email);
@@ -55,6 +45,7 @@ const authByLoginData = async (
 
         if (isValidPassword) {
             generateToken(event, foundUser.email);
+
             return { email: foundUser.email };
         }
     }

@@ -1,6 +1,18 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    effect,
+    inject,
+    OnInit,
+    PLATFORM_ID,
+    viewChildren,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { AuthService } from '@entities/auth';
 import { MessageComponent, IMessage } from '@entities/message';
-import { MessageFormComponent } from '@features/message-form';
+import { MessageHistoryService } from '@entities/message';
 
 @Component({
     selector: 'app-message-showcase',
@@ -10,19 +22,41 @@ import { MessageFormComponent } from '@features/message-form';
     styleUrl: './message-showcase.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MessageShowcaseComponent {
-    readonly messages: IMessage[] = [
-        {
-            id: 1,
-            by: 'me',
-            email: 'john@example.com',
-            text: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis excepturi architecto cum, odit numquam voluptates culpa dolore incidunt at tenetur non suscipit nostrum nisi, maxime dignissimos autem possimus quam sapiente? Suscipit necessitatibus voluptas earum dolorem ea labore natus impedit explicabo beatae fugiat harum facere quisquam quibusdam, itaque quas et voluptatem.`,
-        },
-        {
-            id: 2,
-            by: 'other',
-            email: 'mike@example.com',
-            text: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis excepturi architecto cum, odit numquam voluptates culpa dolore incidunt at tenetur non suscipit nostrum nisi, maxime dignissimos autem possimus quam sapiente? Suscipit necessitatibus voluptas earum dolorem ea labore natus impedit explicabo beatae fugiat harum facere quisquam quibusdam, itaque quas et voluptatem.`,
-        },
-    ];
+export class MessageShowcaseComponent implements OnInit {
+    private readonly messageHistoryService = inject(MessageHistoryService);
+    private readonly authService = inject(AuthService);
+    private readonly user = toSignal(this.authService.returnedUser$);
+    private readonly platformId = inject(PLATFORM_ID);
+    private readonly messages = toSignal(this.messageHistoryService.history$);
+    private readonly messageComponents = viewChildren(MessageComponent);
+    private readonly onMessageHistoryChange = effect(() => {
+        this.scrollToLastMessage('smooth');
+    });
+
+    readonly formattedMessages = computed(() =>
+        this.messages()?.map(
+            (message): IMessage => ({
+                by: message.email === this.user()?.email ? 'me' : 'other',
+                email: message.email,
+                text: message.content,
+                id: message.id,
+            })
+        )
+    );
+
+    ngOnInit() {
+        if (isPlatformBrowser(this.platformId)) {
+            this.messageHistoryService.loadAll();
+        }
+    }
+
+    scrollToLastMessage(behavior: ScrollBehavior) {
+        const messageElem: HTMLElement =
+            this.messageComponents().at(-1)?.elementRef.nativeElement;
+
+        messageElem?.scrollIntoView({
+            behavior,
+            block: 'end',
+        });
+    }
 }

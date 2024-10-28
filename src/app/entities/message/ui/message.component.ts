@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    inject,
+    input,
+} from '@angular/core';
 import { IMessage } from '../lib';
 
 @Component({
@@ -10,5 +16,6 @@ import { IMessage } from '../lib';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MessageComponent {
+    readonly elementRef = inject(ElementRef);
     readonly message = input.required<IMessage>();
 }

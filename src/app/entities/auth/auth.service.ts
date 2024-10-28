@@ -1,6 +1,5 @@
-import { DestroyRef, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, tap } from 'rxjs';
 import { IReturnedUser, IUserAuthData } from '../../../../src/shared/types';
 
@@ -9,7 +8,6 @@ import { IReturnedUser, IUserAuthData } from '../../../../src/shared/types';
 })
 export class AuthService {
     private readonly http = inject(HttpClient);
-    private readonly destroyRef = inject(DestroyRef);
     private readonly _returnedUser$ = new BehaviorSubject<
         IReturnedUser | null | undefined
     >(undefined);
@@ -24,7 +22,6 @@ export class AuthService {
         return this.http
             .post<IReturnedUser | undefined>('/api/login', user)
             .pipe(
-                takeUntilDestroyed(this.destroyRef),
                 tap((returnedUser) => {
                     this._returnedUser$.next(returnedUser);
                     returnedUser
@@ -46,7 +43,6 @@ export class AuthService {
                 | null
             >('/api/registration', user)
             .pipe(
-                takeUntilDestroyed(this.destroyRef),
                 tap((res) => {
                     this._returnedUser$.next(res?.returnedUser);
                     res?.returnedUser

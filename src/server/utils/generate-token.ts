@@ -11,6 +11,6 @@ export const generateToken = async (event: H3Event, email: string) => {
         .sign(secret);
     setCookie(event, 'chatToken', token, {
         httpOnly: true,
-        maxAge: 60 * 60 * 5,
+        maxAge: 60 * 60 * 24 * 20,
     });
 };

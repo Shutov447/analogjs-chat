@@ -6,8 +6,7 @@ import {
 } from 'h3';
 import { verifyToken } from '../utils/verify-token';
 import { IUserAuthData } from '../../../src/shared/types';
-import { db } from '../../../src/main.server';
-import { UserRepository } from '../repositories/user';
+import { userRepo } from '../../../src/main.server';
 
 export default defineEventHandler(async (event) => {
     const currentUrl = getRequestURL(event).pathname;
@@ -22,7 +21,6 @@ export default defineEventHandler(async (event) => {
             )) as unknown as IUserAuthData;
 
             if (email) {
-                const userRepo = new UserRepository(db);
                 const foundUser = await userRepo.findByEmail(email);
 
                 if (email === foundUser?.email) return;

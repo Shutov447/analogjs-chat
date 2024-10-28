@@ -1,4 +1,4 @@
-@for (message of messages; track message.id) {
+@for (message of formattedMessages(); track message.id) {
 <app-message
     [message]="message"
     [class]="message.by === 'me' ? 'own' : ''"

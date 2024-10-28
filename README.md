@@ -2,8 +2,6 @@
 
 ## - really simple fullstack-app to showcase real-time chat using websockets and analogjs
 
-## - auth with one token
+## - authorization with a single token
 
-### backend: analogjs, ws, postgresql, drizzle-orm.
-
-### frontend: ...angular
+### stack: analogjs, ws, postgresql, drizzle-orm, angular, vite
